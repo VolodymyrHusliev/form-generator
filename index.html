@@ -265,7 +265,7 @@
             flex-grow: 1;
         }
 
-        /* Стили для превью формы (НЕ МЕНЯЕМ) */
+        /* Стили для превью формы */
         .preview-container {
             background-color: #0000FF;
             padding: 300px 0;
@@ -380,6 +380,15 @@
             cursor: pointer;
             background-color: #F5F5F5;
             color: #333;
+            transition: background-color 0.2s;
+        }
+
+        .custom-option:hover {
+            background-color: #E0E0E0;
+        }
+
+        .custom-option.selected {
+            background-color: #CCCCCC;
         }
 
         .radio-group {
@@ -511,6 +520,12 @@
             <label for="fieldGap">Отступы между полями:</label>
             <div class="control-inputs">
                 <input type="number" id="fieldGap" value="10" min="0"> px
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="formBorderRadius">Скругление формы:</label>
+            <div class="control-inputs">
+                <input type="number" id="formBorderRadius" value="8" min="0"> px
             </div>
         </div>
     </div>
@@ -663,6 +678,7 @@
     const dropdownSelectedColor = document.getElementById('dropdownSelectedColor');
     const formLanguage = document.getElementById('formLanguage');
     const themeToggle = document.getElementById('themeToggle');
+    const formBorderRadius = document.getElementById('formBorderRadius');
 
     // Field checkboxes
     const nameField = document.getElementById('nameField');
@@ -754,161 +770,6 @@
             street: "Street",
             house: "House",
             apartment: "Apartment"
-        },
-        es: {
-            formTitle: "Mi Formulario",
-            name: "Nombre",
-            surname: "Apellido",
-            email: "Correo electrónico",
-            phone: "Teléfono",
-            age: "Edad",
-            birthdate: "Fecha de nacimiento",
-            gender: "Género",
-            country: "País",
-            password: "Contraseña",
-            confirmPassword: "Confirmar contraseña",
-            about: "Sobre mí",
-            delivery: "Método de entrega",
-            address: "Dirección",
-            comment: "Comentario",
-            discount: "XXXX-XXXX",
-            rating: "Calificar",
-            selectOption: "Seleccionar opción",
-            selectCountry: "Seleccionar país",
-            male: "Masculino",
-            female: "Femenino",
-            other: "Otro",
-            specifyGender: "Especifique su género",
-            courier: "Mensajero",
-            post: "Correo",
-            pickup: "Recoger",
-            street: "Calle",
-            house: "Casa",
-            apartment: "Apartamento"
-        },
-        fr: {
-            formTitle: "Mon Formulaire",
-            name: "Nom",
-            surname: "Prénom",
-            email: "Email",
-            phone: "Téléphone",
-            age: "Âge",
-            birthdate: "Date de naissance",
-            gender: "Genre",
-            country: "Pays",
-            password: "Mot de passe",
-            confirmPassword: "Confirmer le mot de passe",
-            about: "À propos",
-            delivery: "Méthode de livraison",
-            address: "Adresse",
-            comment: "Commentaire",
-            discount: "XXXX-XXXX",
-            rating: "Évaluer",
-            selectOption: "Sélectionner une option",
-            selectCountry: "Sélectionner un pays",
-            male: "Masculin",
-            female: "Féminin",
-            other: "Autre",
-            specifyGender: "Précisez votre genre",
-            courier: "Courrier",
-            post: "Poste",
-            pickup: "Ramasser",
-            street: "Rue",
-            house: "Maison",
-            apartment: "Appartement"
-        },
-        de: {
-            formTitle: "Mein Formular",
-            name: "Name",
-            surname: "Nachname",
-            email: "Email",
-            phone: "Telefon",
-            age: "Alter",
-            birthdate: "Geburtsdatum",
-            gender: "Geschlecht",
-            country: "Land",
-            password: "Passwort",
-            confirmPassword: "Passwort bestätigen",
-            about: "Über mich",
-            delivery: "Liefermethode",
-            address: "Adresse",
-            comment: "Kommentar",
-            discount: "XXXX-XXXX",
-            rating: "Bewerten",
-            selectOption: "Option wählen",
-            selectCountry: "Land wählen",
-            male: "Männlich",
-            female: "Weiblich",
-            other: "Andere",
-            specifyGender: "Geben Sie Ihr Geschlecht an",
-            courier: "Kurier",
-            post: "Post",
-            pickup: "Abholung",
-            street: "Straße",
-            house: "Haus",
-            apartment: "Wohnung"
-        },
-        it: {
-            formTitle: "Il Mio Modulo",
-            name: "Nome",
-            surname: "Cognome",
-            email: "Email",
-            phone: "Telefono",
-            age: "Età",
-            birthdate: "Data di nascita",
-            gender: "Genere",
-            country: "Paese",
-            password: "Password",
-            confirmPassword: "Conferma password",
-            about: "Informazioni",
-            delivery: "Metodo di consegna",
-            address: "Indirizzo",
-            comment: "Commento",
-            discount: "XXXX-XXXX",
-            rating: "Valutazione",
-            selectOption: "Seleziona opzione",
-            selectCountry: "Seleziona paese",
-            male: "Maschio",
-            female: "Femmina",
-            other: "Altro",
-            specifyGender: "Specifica il tuo genere",
-            courier: "Corriere",
-            post: "Posta",
-            pickup: "Ritiro",
-            street: "Via",
-            house: "Casa",
-            apartment: "Appartamento"
-        },
-        pt: {
-            formTitle: "Meu Formulário",
-            name: "Nome",
-            surname: "Sobrenome",
-            email: "Email",
-            phone: "Telefone",
-            age: "Idade",
-            birthdate: "Data de nascimento",
-            gender: "Gênero",
-            country: "País",
-            password: "Senha",
-            confirmPassword: "Confirmar senha",
-            about: "Sobre",
-            delivery: "Método de entrega",
-            address: "Endereço",
-            comment: "Comentário",
-            discount: "XXXX-XXXX",
-            rating: "Avaliar",
-            selectOption: "Selecionar opção",
-            selectCountry: "Selecionar país",
-            male: "Masculino",
-            female: "Feminino",
-            other: "Outro",
-            specifyGender: "Especifique seu gênero",
-            courier: "Correio",
-            post: "Correio",
-            pickup: "Retirada",
-            street: "Rua",
-            house: "Casa",
-            apartment: "Apartamento"
         }
     };
 
@@ -975,7 +836,7 @@
     // Get translation for current language
     function getTranslation(key) {
         const lang = formLanguage.value;
-        return translations[lang][key] || key;
+        return translations[lang]?.[key] || translations['ru'][key] || key;
     }
 
     // Update form width when changed
@@ -1059,365 +920,12 @@
     function createCountrySelect(container) {
         const countries = {
             ru: [
-                "Австралия (Australia)",
-                "Австрия (Austria)",
-                "Азербайджан (Azerbaijan)",
-                "Албания (Albania)",
-                "Алжир (Algeria)",
-                "Аргентина (Argentina)",
-                "Армения (Armenia)",
-                "Беларусь (Belarus)",
-                "Бельгия (Belgium)",
-                "Болгария (Bulgaria)",
-                "Бразилия (Brazil)",
-                "Великобритания (United Kingdom)",
-                "Венгрия (Hungary)",
-                "Германия (Germany)",
-                "Греция (Greece)",
-                "Грузия (Georgia)",
-                "Дания (Denmark)",
-                "Египет (Egypt)",
-                "Израиль (Israel)",
-                "Индия (India)",
-                "Индонезия (Indonesia)",
-                "Иран (Iran)",
-                "Ирландия (Ireland)",
-                "Исландия (Iceland)",
-                "Испания (Spain)",
-                "Италия (Italy)",
-                "Казахстан (Kazakhstan)",
-                "Канада (Canada)",
-                "Китай (China)",
-                "Корея Южная (South Korea)",
-                "Латвия (Latvia)",
-                "Литва (Lithuania)",
-                "Малайзия (Malaysia)",
-                "Мексика (Mexico)",
-                "Нидерланды (Netherlands)",
-                "Норвегия (Norway)",
-                "Польша (Poland)",
-                "Португалия (Portugal)",
-                "Россия (Russia)",
-                "Румыния (Romania)",
-                "Саудовская Аравия (Saudi Arabia)",
-                "Сербия (Serbia)",
-                "Сингапур (Singapore)",
-                "Словакия (Slovakia)",
-                "Словения (Slovenia)",
-                "США (United States)",
-                "Таиланд (Thailand)",
-                "Турция (Turkey)",
-                "Украина (Ukraine)",
-                "Финляндия (Finland)",
-                "Франция (France)",
-                "Хорватия (Croatia)",
-                "Черногория (Montenegro)",
-                "Чехия (Czech Republic)",
-                "Швейцария (Switzerland)",
-                "Швеция (Sweden)",
-                "Эстония (Estonia)",
-                "Япония (Japan)"
+                "Россия", "Украина", "Беларусь", "Казахстан", "США",
+                "Германия", "Франция", "Италия", "Испания", "Великобритания"
             ],
             en: [
-                "Australia",
-                "Austria",
-                "Azerbaijan",
-                "Albania",
-                "Algeria",
-                "Argentina",
-                "Armenia",
-                "Belarus",
-                "Belgium",
-                "Bulgaria",
-                "Brazil",
-                "Canada",
-                "China",
-                "Croatia",
-                "Czech Republic",
-                "Denmark",
-                "Egypt",
-                "Estonia",
-                "Finland",
-                "France",
-                "Georgia",
-                "Germany",
-                "Greece",
-                "Hungary",
-                "Iceland",
-                "India",
-                "Indonesia",
-                "Iran",
-                "Ireland",
-                "Israel",
-                "Italy",
-                "Japan",
-                "Kazakhstan",
-                "Latvia",
-                "Lithuania",
-                "Malaysia",
-                "Mexico",
-                "Montenegro",
-                "Netherlands",
-                "Norway",
-                "Poland",
-                "Portugal",
-                "Romania",
-                "Russia",
-                "Saudi Arabia",
-                "Serbia",
-                "Singapore",
-                "Slovakia",
-                "Slovenia",
-                "South Korea",
-                "Spain",
-                "Sweden",
-                "Switzerland",
-                "Thailand",
-                "Turkey",
-                "Ukraine",
-                "United Kingdom",
-                "United States"
-            ],
-            es: [
-                "Alemania (Germany)",
-                "Argentina",
-                "Australia",
-                "Austria",
-                "Bélgica (Belgium)",
-                "Brasil (Brazil)",
-                "Bulgaria",
-                "Canadá (Canada)",
-                "China",
-                "Croacia (Croatia)",
-                "Dinamarca (Denmark)",
-                "Egipto (Egypt)",
-                "España",
-                "Estados Unidos (United States)",
-                "Finlandia (Finland)",
-                "Francia (France)",
-                "Grecia (Greece)",
-                "Hungría (Hungary)",
-                "India",
-                "Indonesia",
-                "Irán (Iran)",
-                "Irlanda (Ireland)",
-                "Islandia (Iceland)",
-                "Israel",
-                "Italia (Italy)",
-                "Japón (Japan)",
-                "Kazajistán (Kazakhstan)",
-                "Letonia (Latvia)",
-                "Lituania (Lithuania)",
-                "Malasia (Malaysia)",
-                "México",
-                "Noruega (Norway)",
-                "Países Bajos (Netherlands)",
-                "Polonia (Poland)",
-                "Portugal",
-                "Reino Unido (United Kingdom)",
-                "República Checa (Czech Republic)",
-                "Rumanía (Romania)",
-                "Rusia (Russia)",
-                "Serbia",
-                "Singapur (Singapore)",
-                "Suecia (Sweden)",
-                "Suiza (Switzerland)",
-                "Tailandia (Thailand)",
-                "Turquía (Turkey)",
-                "Ucrania (Ukraine)"
-            ],
-            fr: [
-                "Allemagne (Germany)",
-                "Argentine (Argentina)",
-                "Australie (Australia)",
-                "Autriche (Austria)",
-                "Belgique (Belgium)",
-                "Brésil (Brazil)",
-                "Bulgarie (Bulgaria)",
-                "Canada",
-                "Chine (China)",
-                "Croatie (Croatia)",
-                "Danemark (Denmark)",
-                "Égypte (Egypt)",
-                "Espagne (Spain)",
-                "États-Unis (United States)",
-                "Finlande (Finland)",
-                "France",
-                "Grèce (Greece)",
-                "Hongrie (Hungary)",
-                "Inde (India)",
-                "Indonésie (Indonesia)",
-                "Iran",
-                "Irlande (Ireland)",
-                "Islande (Iceland)",
-                "Israël (Israel)",
-                "Italie (Italy)",
-                "Japon (Japan)",
-                "Kazakhstan",
-                "Lettonie (Latvia)",
-                "Lituanie (Lithuania)",
-                "Malaisie (Malaysia)",
-                "Mexique (Mexico)",
-                "Norvège (Norway)",
-                "Pays-Bas (Netherlands)",
-                "Polonie (Poland)",
-                "Portugal",
-                "République tchèque (Czech Republic)",
-                "Roumanie (Romania)",
-                "Royaume-Uni (United Kingdom)",
-                "Russie (Russia)",
-                "Serbie (Serbia)",
-                "Singapour (Singapore)",
-                "Suède (Sweden)",
-                "Suisse (Switzerland)",
-                "Thaïlande (Thailand)",
-                "Turquie (Turkey)",
-                "Ukraine (Ukraine)"
-            ],
-            de: [
-                "Australien (Australia)",
-                "Belgien (Belgium)",
-                "Brasilien (Brazil)",
-                "China",
-                "Dänemark (Denmark)",
-                "Deutschland",
-                "Finnland (Finland)",
-                "Frankreich (France)",
-                "Griechenland (Greece)",
-                "Indien (India)",
-                "Indonesien (Indonesia)",
-                "Iran",
-                "Irland (Ireland)",
-                "Island (Iceland)",
-                "Israel",
-                "Italien (Italy)",
-                "Japan",
-                "Kanada (Canada)",
-                "Kasachstan (Kazakhstan)",
-                "Lettland (Latvia)",
-                "Litauen (Lithuania)",
-                "Malaysia",
-                "Mexiko (Mexico)",
-                "Niederlande (Netherlands)",
-                "Norwegen (Norway)",
-                "Österreich (Austria)",
-                "Polen (Poland)",
-                "Portugal",
-                "Rumänien (Romania)",
-                "Russland (Russia)",
-                "Schweden (Sweden)",
-                "Schweiz (Switzerland)",
-                "Serbien (Serbia)",
-                "Singapur (Singapore)",
-                "Spanien (Spain)",
-                "Südafrika (South Africa)",
-                "Südkorea (South Korea)",
-                "Thailand",
-                "Tschechien (Czech Republic)",
-                "Türkei (Turkey)",
-                "Ukraine (Ukraine)",
-                "Ungarn (Hungary)",
-                "Vereinigte Staaten (United States)",
-                "Vereinigtes Königreich (United Kingdom)"
-            ],
-            it: [
-                "Albania",
-                "Argentina",
-                "Australia",
-                "Austria",
-                "Belgio (Belgium)",
-                "Bielorussia (Belarus)",
-                "Brasile (Brazil)",
-                "Bulgaria",
-                "Canada",
-                "Cina (China)",
-                "Croazia (Croatia)",
-                "Danimarca (Denmark)",
-                "Egitto (Egypt)",
-                "Estonia",
-                "Finlandia (Finland)",
-                "Francia (France)",
-                "Germania (Germany)",
-                "Giappone (Japan)",
-                "Grecia (Greece)",
-                "India",
-                "Indonesia",
-                "Irlanda (Ireland)",
-                "Islanda (Iceland)",
-                "Israele (Israel)",
-                "Italia",
-                "Kazakistan (Kazakhstan)",
-                "Lettonia (Latvia)",
-                "Lituania (Lithuania)",
-                "Malaysia",
-                "Messico (Mexico)",
-                "Norvegia (Norway)",
-                "Paesi Bassi (Netherlands)",
-                "Polonia (Poland)",
-                "Portogallo (Portugal)",
-                "Regno Unito (United Kingdom)",
-                "Repubblica Ceca (Czech Republic)",
-                "Romania",
-                "Russia (Russia)",
-                "Serbia",
-                "Singapore",
-                "Slovacchia (Slovakia)",
-                "Slovenia",
-                "Spagna (Spain)",
-                "Stati Uniti (United States)",
-                "Svezia (Sweden)",
-                "Svizzera (Switzerland)",
-                "Turchia (Turkey)",
-                "Ucraina (Ukraine)",
-                "Ungheria (Hungary)"
-            ],
-            pt: [
-                "Alemanha (Germany)",
-                "Argentina",
-                "Austrália (Australia)",
-                "Áustria (Austria)",
-                "Bélgica (Belgium)",
-                "Brasil",
-                "Bulgária (Bulgaria)",
-                "Canadá (Canada)",
-                "China",
-                "Croácia (Croatia)",
-                "Dinamarca (Denmark)",
-                "Egito (Egypt)",
-                "Espanha (Spain)",
-                "Estados Unidos (United States)",
-                "Finlândia (Finland)",
-                "França (France)",
-                "Grécia (Greece)",
-                "Hungria (Hungary)",
-                "Índia (India)",
-                "Indonésia (Indonesia)",
-                "Irã (Iran)",
-                "Irlanda (Ireland)",
-                "Islândia (Iceland)",
-                "Israel",
-                "Itália (Italy)",
-                "Japão (Japan)",
-                "Cazaquistão (Kazakhstan)",
-                "Letônia (Latvia)",
-                "Lituânia (Lithuania)",
-                "Malásia (Malaysia)",
-                "México (Mexico)",
-                "Noruega (Norway)",
-                "Países Baixos (Netherlands)",
-                "Polônia (Poland)",
-                "Portugal",
-                "Reino Unido (United Kingdom)",
-                "República Tcheca (Czech Republic)",
-                "Romênia (Romania)",
-                "Rússia (Russia)",
-                "Sérvia (Serbia)",
-                "Singapura (Singapore)",
-                "Suécia (Sweden)",
-                "Suíça (Switzerland)",
-                "Tailândia (Thailand)",
-                "Turquia (Turkey)",
-                "Ucrânia (Ukraine)"
+                "Russia", "Ukraine", "Belarus", "Kazakhstan", "USA",
+                "Germany", "France", "Italy", "Spain", "United Kingdom"
             ]
         };
 
@@ -1432,29 +940,14 @@
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'custom-options';
 
-        // Sort countries alphabetically
-        const sortedCountries = countries[formLanguage.value].sort((a, b) => {
-            // Remove English part for sorting
-            const aName = a.split(' (')[0].toLowerCase();
-            const bName = b.split(' (')[0].toLowerCase();
-            return aName.localeCompare(bName);
-        });
-
-        sortedCountries.forEach(country => {
+        const currentCountries = countries[formLanguage.value] || countries['ru'];
+        
+        currentCountries.forEach(country => {
             const option = document.createElement('div');
             option.className = 'custom-option';
             option.textContent = country;
             option.dataset.value = country;
-
-            option.addEventListener('mouseenter', function() {
-                this.style.backgroundColor = dropdownHoverColor.value;
-            });
-
-            option.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('selected')) {
-                    this.style.backgroundColor = fieldBgColor.value;
-                }
-            });
+            applyFieldStyles(option);
 
             option.addEventListener('click', function() {
                 optionsContainer.querySelectorAll('.custom-option').forEach(opt => {
@@ -1580,6 +1073,7 @@
     function updateFormPreview() {
         // Apply form styles
         formPreview.style.padding = `${formPadding.value}px`;
+        formPreview.style.borderRadius = `${formBorderRadius.value}px`;
         previewForm.style.gap = `${fieldGap.value}px`;
         formPreview.style.width = `${formWidth.value}px`;
         previewFormTitle.textContent = formTitle.value;
@@ -1587,7 +1081,7 @@
         // Clear previous fields
         previewForm.innerHTML = '';
 
-        // Add selected fields (все поля идут последовательно без группировки)
+        // Add selected fields
         if (nameField.checked) {
             const field = document.createElement('input');
             field.type = 'text';
@@ -1621,61 +1115,12 @@
             const field = document.createElement('input');
             field.type = 'date';
             field.className = 'form-field';
-            field.style.backgroundColor = '#F5F5F5';
-            field.style.borderColor = '#CCCCCC';
-            field.style.color = '#333';
+            applyFieldStyles(field);
             previewForm.appendChild(field);
         }
 
         if (genderField.checked) {
-            const genderContainer = document.createElement('div');
-            genderContainer.className = 'radio-group';
-            genderContainer.style.backgroundColor = 'transparent';
-
-            const genders = [
-                { id: 'male', label: getTranslation('male') },
-                { id: 'female', label: getTranslation('female') },
-                { id: 'other', label: getTranslation('other') }
-            ];
-
-            genders.forEach(gender => {
-                const radioItem = document.createElement('div');
-                radioItem.className = 'radio-item';
-                radioItem.style.backgroundColor = 'transparent';
-
-                const radioInput = document.createElement('input');
-                radioInput.type = 'radio';
-                radioInput.id = `gender_${gender.id}`;
-                radioInput.name = 'gender';
-                radioInput.value = gender.id;
-
-                const radioLabel = document.createElement('label');
-                radioLabel.htmlFor = `gender_${gender.id}`;
-                radioLabel.textContent = gender.label;
-                radioLabel.style.color = '#333';
-
-                radioItem.appendChild(radioInput);
-                radioItem.appendChild(radioLabel);
-
-                if (gender.id === 'other') {
-                    const otherInput = document.createElement('input');
-                    otherInput.type = 'text';
-                    otherInput.placeholder = getTranslation('specifyGender');
-                    otherInput.className = 'form-field';
-                    otherInput.style.marginLeft = '10px';
-                    otherInput.style.width = 'auto';
-                    otherInput.style.flexGrow = '1';
-                    otherInput.style.backgroundColor = '#F5F5F5';
-                    otherInput.style.borderColor = '#CCCCCC';
-                    otherInput.style.color = '#333';
-
-                    radioItem.appendChild(otherInput);
-                }
-
-                genderContainer.appendChild(radioItem);
-            });
-
-            previewForm.appendChild(genderContainer);
+            createGenderRadio(previewForm);
         }
 
         if (countryField.checked) {
@@ -1717,39 +1162,7 @@
         }
 
         if (deliveryField.checked) {
-            const deliveryContainer = document.createElement('div');
-            deliveryContainer.className = 'radio-group';
-            deliveryContainer.style.backgroundColor = 'transparent';
-
-            const methods = [
-                { id: 'courier', label: getTranslation('courier') },
-                { id: 'post', label: getTranslation('post') },
-                { id: 'pickup', label: getTranslation('pickup') }
-            ];
-
-            methods.forEach(method => {
-                const radioItem = document.createElement('div');
-                radioItem.className = 'radio-item';
-                radioItem.style.backgroundColor = 'transparent';
-
-                const radioInput = document.createElement('input');
-                radioInput.type = 'radio';
-                radioInput.id = `delivery_${method.id}`;
-                radioInput.name = 'delivery';
-                radioInput.value = method.id;
-
-                const radioLabel = document.createElement('label');
-                radioLabel.htmlFor = `delivery_${method.id}`;
-                radioLabel.textContent = method.label;
-                radioLabel.style.color = '#333';
-
-                radioItem.appendChild(radioInput);
-                radioItem.appendChild(radioLabel);
-
-                deliveryContainer.appendChild(radioItem);
-            });
-
-            previewForm.appendChild(deliveryContainer);
+            createDeliveryMethod(previewForm);
         }
 
         if (addressField.checked) {
@@ -1809,30 +1222,26 @@
                 option.className = 'custom-option';
                 option.textContent = opt.value;
                 option.dataset.value = opt.value;
-
-                option.style.backgroundColor = '#F5F5F5';
-                option.style.borderRadius = `${borderRadius.value}px`;
-                option.style.margin = '2px';
-                option.style.color = '#333';
+                applyFieldStyles(option);
 
                 option.addEventListener('mouseenter', function() {
-                    this.style.backgroundColor = '#E0E0E0';
+                    this.style.backgroundColor = dropdownHoverColor.value;
                 });
 
                 option.addEventListener('mouseleave', function() {
                     if (!this.classList.contains('selected')) {
-                        this.style.backgroundColor = '#F5F5F5';
+                        this.style.backgroundColor = fieldBgColor.value;
                     }
                 });
 
                 option.addEventListener('click', function() {
                     optionsContainer.querySelectorAll('.custom-option').forEach(opt => {
                         opt.classList.remove('selected');
-                        opt.style.backgroundColor = '#F5F5F5';
+                        opt.style.backgroundColor = fieldBgColor.value;
                     });
 
                     this.classList.add('selected');
-                    this.style.backgroundColor = '#CCCCCC';
+                    this.style.backgroundColor = dropdownSelectedColor.value;
                     trigger.textContent = this.textContent;
                     optionsContainer.style.display = 'none';
                 });
@@ -1856,29 +1265,20 @@
     }
 
     function applyFieldStyles(element) {
-        element.style.backgroundColor = '#F5F5F5';
-        element.style.borderColor = '#CCCCCC';
-        element.style.borderWidth = '1px';
-        element.style.borderRadius = '4px';
+        element.style.backgroundColor = fieldBgColor.value;
+        element.style.borderColor = fieldBorderColor.value;
+        element.style.borderWidth = borderWidth.value + 'px';
+        element.style.borderRadius = borderRadius.value + 'px';
         element.style.borderStyle = 'solid';
+        element.style.padding = '10px';
+        element.style.boxSizing = 'border-box';
         element.style.width = '100%';
         element.style.color = '#333';
     }
 
     // Update dropdown colors when changed
-    dropdownHoverColor.addEventListener('input', function() {
-        document.querySelectorAll('.custom-option').forEach(option => {
-            option.addEventListener('mouseenter', function() {
-                this.style.backgroundColor = dropdownHoverColor.value;
-            });
-        });
-    });
-
-    dropdownSelectedColor.addEventListener('input', function() {
-        document.querySelectorAll('.custom-option.selected').forEach(option => {
-            option.style.backgroundColor = dropdownSelectedColor.value;
-        });
-    });
+    dropdownHoverColor.addEventListener('input', updateFormPreview);
+    dropdownSelectedColor.addEventListener('input', updateFormPreview);
 
     // Add event listeners to all checkboxes to update form preview
     const allCheckboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
@@ -1889,7 +1289,8 @@
     // Add event listeners to all style controls to update form preview
     const styleControls = [
         formPadding, fieldGap, fieldBgColor, fieldBorderColor,
-        borderWidth, borderRadius, dropdownHoverColor, dropdownSelectedColor
+        borderWidth, borderRadius, dropdownHoverColor, dropdownSelectedColor,
+        formBorderRadius
     ];
 
     styleControls.forEach(control => {
