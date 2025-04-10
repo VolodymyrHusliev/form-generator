@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORM GENERATOR</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --section-bg: #2d2d2d;
+            --section-shadow: rgba(0,0,0,0.3);
+            --preview-bg: #0000FF;
+            --field-bg: #3a3a3a;
+            --field-border: #555555;
+            --color-picker-bg: #444444;
+            --footer-text: #aaaaaa;
+        }
+
+        .light-mode {
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --section-bg: white;
+            --section-shadow: rgba(0,0,0,0.1);
+            --field-bg: #F5F5F5;
+            --field-border: #CCCCCC;
+            --color-picker-bg: #ffffff;
+            --footer-text: #666;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px 0 100px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: calc(100vh - 240px);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--section-bg);
+            padding: 30px 0;
+            box-shadow: 0 2px 5px var(--section-shadow);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            transition: all 0.3s;
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .site-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+            letter-spacing: 1px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            pointer-events: none;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .theme-text {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            align-items: center;
+            margin-top: 100px;
+        }
+
+        .section {
+            background-color: var(--section-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px var(--section-shadow);
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .control-group label {
+            width: 200px;
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .control-inputs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        input[type="color"] {
+            width: 40px;
+            height: 30px;
+            border: 2px solid var(--field-border);
+            border-radius: 8px;
+            padding: 0;
+            cursor: pointer;
+            -webkit-appearance: none;
+            background: var(--color-picker-bg);
+            box-sizing: border-box;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            padding: 8px;
+            border: 1px solid var(--field-border);
+            border-radius: 4px;
+            width: 80px;
+            background-color: var(--field-bg);
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .checkbox-item label {
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .dropdown-options {
+            margin-top: 10px;
+            margin-left: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: calc(100% - 25px);
+        }
+
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .dropdown-option input[type="text"] {
+            flex-grow: 1;
+        }
+
+        /* Стили для превью формы (НЕ МЕНЯЕМ) */
+        .preview-container {
+            background-color: #0000FF;
+            padding: 300px 0;
+            width: 100%;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        #formPreview {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .preview-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .form-field {
+            padding: 10px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            background-color: #F5F5F5;
+            width: 100%;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        textarea.form-field {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            width: 100%;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .remove-image-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .remove-image-btn:hover {
+            background: #cc0000;
+        }
+
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select-trigger {
+            padding: 10px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            background-color: #F5F5F5;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+            margin-top: 5px;
+        }
+
+        .custom-option {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #F5F5F5;
+            color: #333;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .rating-star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .rating-star.active {
+            color: #ffcc00;
+        }
+
+        .address-fields {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--section-bg);
+            padding: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--footer-text);
+            box-shadow: 0 -2px 5px var(--section-shadow);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .footer a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .heart {
+            color: #ff4444;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <div class="site-title">FORM GENERATOR</div>
+        <div class="theme-toggle">
+            <span class="theme-text">THEME</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="mainContainer">
+    <div class="section">
+        <div class="section-title">[ Настройки формы ]</div>
+        <div class="control-group">
+            <label for="formLanguage">Язык формы:</label>
+            <div class="control-inputs">
+                <select id="formLanguage">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="it">Italiano</option>
+                    <option value="pt">Português</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="formTitle">Заголовок формы:</label>
+            <div class="control-inputs">
+                <input type="text" id="formTitle" value="Моя форма" style="flex-grow: 1;">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="formWidth">Ширина формы:</label>
+            <div class="control-inputs">
+                <input type="number" id="formWidth" value="600" min="300" max="1200"> px
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="formBgColor">Фон формы:</label>
+            <div class="control-inputs">
+                <input type="color" id="formBgColor" value="#FFFFFF">
+                <span>или</span>
+                <input type="file" id="formBgImage" accept="image/*">
+                <button id="removeImageBtn" class="remove-image-btn">Удалить</button>
+            </div>
+            <img id="bgImagePreview" class="image-preview">
+        </div>
+        <div class="control-group">
+            <label for="formPadding">Отступы:</label>
+            <div class="control-inputs">
+                <input type="number" id="formPadding" value="20" min="0"> px
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="fieldGap">Отступы между полями:</label>
+            <div class="control-inputs">
+                <input type="number" id="fieldGap" value="10" min="0"> px
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">[ Стиль полей ]</div>
+        <div class="control-group">
+            <label for="fieldBgColor">Цвет фона:</label>
+            <div class="control-inputs">
+                <input type="color" id="fieldBgColor" value="#F5F5F5">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="fieldBorderColor">Цвет обводки:</label>
+            <div class="control-inputs">
+                <input type="color" id="fieldBorderColor" value="#CCCCCC">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="borderWidth">Толщина:</label>
+            <div class="control-inputs">
+                <input type="number" id="borderWidth" value="1" min="0"> px
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="borderRadius">Скругление:</label>
+            <div class="control-inputs">
+                <input type="number" id="borderRadius" value="4" min="0"> px
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="dropdownHoverColor">Цвет при наведении:</label>
+            <div class="control-inputs">
+                <input type="color" id="dropdownHoverColor" value="#E0E0E0">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="dropdownSelectedColor">Цвет выбранного:</label>
+            <div class="control-inputs">
+                <input type="color" id="dropdownSelectedColor" value="#CCCCCC">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">[ Поля формы ]</div>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="nameField" checked>
+                <label for="nameField">Имя</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="surnameField" checked>
+                <label for="surnameField">Фамилия</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="emailField" checked>
+                <label for="emailField">Email</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="phoneField" checked>
+                <label for="phoneField">Телефон</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ageField">
+                <label for="ageField">Возраст</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="birthdateField">
+                <label for="birthdateField">Дата рождения</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="genderField">
+                <label for="genderField">Пол</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="countryField">
+                <label for="countryField">Страна</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="passwordField">
+                <label for="passwordField">Пароль + подтверждение</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="aboutField">
+                <label for="aboutField">О себе</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="deliveryField">
+                <label for="deliveryField">Способ доставки</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="addressField">
+                <label for="addressField">Адрес</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="commentField">
+                <label for="commentField">Комментарий</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="discountField">
+                <label for="discountField">Скидочная карта</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ratingField">
+                <label for="ratingField">Рейтинг (звезды)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="dropdownField">
+                <label for="dropdownField">Выпадающий список</label>
+                <div class="control-inputs">
+                    <input type="number" id="dropdownItemsCount" value="3" min="1" max="10" style="width: 50px;" disabled> элементов
+                </div>
+            </div>
+            <div class="dropdown-options" id="dropdownOptionsContainer" style="display: none;">
+                <!-- Options will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-container">
+        <div id="formPreview" style="width: 600px;">
+            <div class="form-title" id="previewFormTitle">Моя форма</div>
+            <div class="preview-form" id="previewForm">
+                <!-- Form fields will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    Developed by <a href="https://www.linkedin.com/in/volodymyr-husliev-755473267/" target="_blank">Volodymyr Husliev</a> with <span class="heart">❤️</span>
+</div>
+
+<script>
+    // Получаем элементы
+    const formTitle = document.getElementById('formTitle');
+    const formWidth = document.getElementById('formWidth');
+    const formBgColor = document.getElementById('formBgColor');
+    const formBgImage = document.getElementById('formBgImage');
+    const bgImagePreview = document.getElementById('bgImagePreview');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    const formPadding = document.getElementById('formPadding');
+    const fieldGap = document.getElementById('fieldGap');
+    const fieldBgColor = document.getElementById('fieldBgColor');
+    const fieldBorderColor = document.getElementById('fieldBorderColor');
+    const borderWidth = document.getElementById('borderWidth');
+    const borderRadius = document.getElementById('borderRadius');
+    const dropdownHoverColor = document.getElementById('dropdownHoverColor');
+    const dropdownSelectedColor = document.getElementById('dropdownSelectedColor');
+    const formLanguage = document.getElementById('formLanguage');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Field checkboxes
+    const nameField = document.getElementById('nameField');
+    const surnameField = document.getElementById('surnameField');
+    const emailField = document.getElementById('emailField');
+    const phoneField = document.getElementById('phoneField');
+    const ageField = document.getElementById('ageField');
+    const birthdateField = document.getElementById('birthdateField');
+    const genderField = document.getElementById('genderField');
+    const countryField = document.getElementById('countryField');
+    const passwordField = document.getElementById('passwordField');
+    const aboutField = document.getElementById('aboutField');
+    const deliveryField = document.getElementById('deliveryField');
+    const addressField = document.getElementById('addressField');
+    const commentField = document.getElementById('commentField');
+    const discountField = document.getElementById('discountField');
+    const ratingField = document.getElementById('ratingField');
+    const dropdownField = document.getElementById('dropdownField');
+    const dropdownItemsCount = document.getElementById('dropdownItemsCount');
+    const dropdownOptionsContainer = document.getElementById('dropdownOptionsContainer');
+
+    // Preview elements
+    const previewFormTitle = document.getElementById('previewFormTitle');
+    const previewForm = document.getElementById('previewForm');
+    const formPreview = document.getElementById('formPreview');
+    const mainContainer = document.getElementById('mainContainer');
+    const previewContainer = document.querySelector('.preview-container');
+
+    // Translations
+    const translations = {
+        ru: {
+            formTitle: "Моя форма",
+            name: "Имя",
+            surname: "Фамилия",
+            email: "Email",
+            phone: "Телефон",
+            age: "Возраст",
+            birthdate: "Дата рождения",
+            gender: "Пол",
+            country: "Страна",
+            password: "Пароль",
+            confirmPassword: "Подтвердите пароль",
+            about: "О себе",
+            delivery: "Способ доставки",
+            address: "Адрес",
+            comment: "Комментарий",
+            discount: "XXXX-XXXX",
+            rating: "Оцените",
+            selectOption: "Выберите вариант",
+            selectCountry: "Выберите страну",
+            male: "Мужской",
+            female: "Женский",
+            other: "Другой",
+            specifyGender: "Укажите ваш пол",
+            courier: "Курьер",
+            post: "Почта",
+            pickup: "Самовывоз",
+            street: "Улица",
+            house: "Дом",
+            apartment: "Квартира"
+        },
+        en: {
+            formTitle: "My Form",
+            name: "Name",
+            surname: "Surname",
+            email: "Email",
+            phone: "Phone",
+            age: "Age",
+            birthdate: "Birthdate",
+            gender: "Gender",
+            country: "Country",
+            password: "Password",
+            confirmPassword: "Confirm Password",
+            about: "About",
+            delivery: "Delivery Method",
+            address: "Address",
+            comment: "Comment",
+            discount: "XXXX-XXXX",
+            rating: "Rate",
+            selectOption: "Select option",
+            selectCountry: "Select country",
+            male: "Male",
+            female: "Female",
+            other: "Other",
+            specifyGender: "Specify your gender",
+            courier: "Courier",
+            post: "Post",
+            pickup: "Pickup",
+            street: "Street",
+            house: "House",
+            apartment: "Apartment"
+        },
+        es: {
+            formTitle: "Mi Formulario",
+            name: "Nombre",
+            surname: "Apellido",
+            email: "Correo electrónico",
+            phone: "Teléfono",
+            age: "Edad",
+            birthdate: "Fecha de nacimiento",
+            gender: "Género",
+            country: "País",
+            password: "Contraseña",
+            confirmPassword: "Confirmar contraseña",
+            about: "Sobre mí",
+            delivery: "Método de entrega",
+            address: "Dirección",
+            comment: "Comentario",
+            discount: "XXXX-XXXX",
+            rating: "Calificar",
+            selectOption: "Seleccionar opción",
+            selectCountry: "Seleccionar país",
+            male: "Masculino",
+            female: "Femenino",
+            other: "Otro",
+            specifyGender: "Especifique su género",
+            courier: "Mensajero",
+            post: "Correo",
+            pickup: "Recoger",
+            street: "Calle",
+            house: "Casa",
+            apartment: "Apartamento"
+        },
+        fr: {
+            formTitle: "Mon Formulaire",
+            name: "Nom",
+            surname: "Prénom",
+            email: "Email",
+            phone: "Téléphone",
+            age: "Âge",
+            birthdate: "Date de naissance",
+            gender: "Genre",
+            country: "Pays",
+            password: "Mot de passe",
+            confirmPassword: "Confirmer le mot de passe",
+            about: "À propos",
+            delivery: "Méthode de livraison",
+            address: "Adresse",
+            comment: "Commentaire",
+            discount: "XXXX-XXXX",
+            rating: "Évaluer",
+            selectOption: "Sélectionner une option",
+            selectCountry: "Sélectionner un pays",
+            male: "Masculin",
+            female: "Féminin",
+            other: "Autre",
+            specifyGender: "Précisez votre genre",
+            courier: "Courrier",
+            post: "Poste",
+            pickup: "Ramasser",
+            street: "Rue",
+            house: "Maison",
+            apartment: "Appartement"
+        },
+        de: {
+            formTitle: "Mein Formular",
+            name: "Name",
+            surname: "Nachname",
+            email: "Email",
+            phone: "Telefon",
+            age: "Alter",
+            birthdate: "Geburtsdatum",
+            gender: "Geschlecht",
+            country: "Land",
+            password: "Passwort",
+            confirmPassword: "Passwort bestätigen",
+            about: "Über mich",
+            delivery: "Liefermethode",
+            address: "Adresse",
+            comment: "Kommentar",
+            discount: "XXXX-XXXX",
+            rating: "Bewerten",
+            selectOption: "Option wählen",
+            selectCountry: "Land wählen",
+            male: "Männlich",
+            female: "Weiblich",
+            other: "Andere",
+            specifyGender: "Geben Sie Ihr Geschlecht an",
+            courier: "Kurier",
+            post: "Post",
+            pickup: "Abholung",
+            street: "Straße",
+            house: "Haus",
+            apartment: "Wohnung"
+        },
+        it: {
+            formTitle: "Il Mio Modulo",
+            name: "Nome",
+            surname: "Cognome",
+            email: "Email",
+            phone: "Telefono",
+            age: "Età",
+            birthdate: "Data di nascita",
+            gender: "Genere",
+            country: "Paese",
+            password: "Password",
+            confirmPassword: "Conferma password",
+            about: "Informazioni",
+            delivery: "Metodo di consegna",
+            address: "Indirizzo",
+            comment: "Commento",
+            discount: "XXXX-XXXX",
+            rating: "Valutazione",
+            selectOption: "Seleziona opzione",
+            selectCountry: "Seleziona paese",
+            male: "Maschio",
+            female: "Femmina",
+            other: "Altro",
+            specifyGender: "Specifica il tuo genere",
+            courier: "Corriere",
+            post: "Posta",
+            pickup: "Ritiro",
+            street: "Via",
+            house: "Casa",
+            apartment: "Appartamento"
+        },
+        pt: {
+            formTitle: "Meu Formulário",
+            name: "Nome",
+            surname: "Sobrenome",
+            email: "Email",
+            phone: "Telefone",
+            age: "Idade",
+            birthdate: "Data de nascimento",
+            gender: "Gênero",
+            country: "País",
+            password: "Senha",
+            confirmPassword: "Confirmar senha",
+            about: "Sobre",
+            delivery: "Método de entrega",
+            address: "Endereço",
+            comment: "Comentário",
+            discount: "XXXX-XXXX",
+            rating: "Avaliar",
+            selectOption: "Selecionar opção",
+            selectCountry: "Selecionar país",
+            male: "Masculino",
+            female: "Feminino",
+            other: "Outro",
+            specifyGender: "Especifique seu gênero",
+            courier: "Correio",
+            post: "Correio",
+            pickup: "Retirada",
+            street: "Rua",
+            house: "Casa",
+            apartment: "Apartamento"
+        }
+    };
+
+    // Handle theme toggle
+    themeToggle.addEventListener('change', function() {
+        document.body.classList.toggle('light-mode', this.checked);
+        updateFormPreview();
+    });
+
+    // Handle language change
+    formLanguage.addEventListener('change', updateFormPreview);
+
+    // Handle background image upload
+    formBgImage.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                bgImagePreview.src = event.target.result;
+                bgImagePreview.style.display = 'block';
+                removeImageBtn.style.display = 'inline-block';
+                formPreview.style.backgroundImage = `url(${event.target.result})`;
+                formBgColor.value = '#FFFFFF';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Handle remove image button
+    removeImageBtn.addEventListener('click', function() {
+        bgImagePreview.src = '';
+        bgImagePreview.style.display = 'none';
+        removeImageBtn.style.display = 'none';
+        formBgImage.value = '';
+        formPreview.style.backgroundImage = 'none';
+        formPreview.style.backgroundColor = formBgColor.value;
+    });
+
+    // Generate dropdown options when count changes
+    dropdownItemsCount.addEventListener('change', updateDropdownOptions);
+    dropdownField.addEventListener('change', function() {
+        dropdownItemsCount.disabled = !this.checked;
+        dropdownOptionsContainer.style.display = this.checked ? 'flex' : 'none';
+        updateFormPreview();
+        if (this.checked) updateDropdownOptions();
+    });
+
+    function updateDropdownOptions() {
+        const count = parseInt(dropdownItemsCount.value);
+        dropdownOptionsContainer.innerHTML = '';
+
+        for (let i = 0; i < count; i++) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'dropdown-option';
+            optionDiv.innerHTML = `
+                    ${i+1}. <input type="text" class="dropdown-option-text" value="${getTranslation('selectOption')} ${i+1}" data-index="${i}">
+                `;
+            dropdownOptionsContainer.appendChild(optionDiv);
+
+            optionDiv.querySelector('input').addEventListener('input', updateFormPreview);
+        }
+    }
+
+    // Get translation for current language
+    function getTranslation(key) {
+        const lang = formLanguage.value;
+        return translations[lang][key] || key;
+    }
+
+    // Update form width when changed
+    formWidth.addEventListener('input', function() {
+        formPreview.style.width = this.value + 'px';
+    });
+
+    // Update form title
+    formTitle.addEventListener('input', function() {
+        previewFormTitle.textContent = this.value;
+    });
+
+    // Update form background color
+    formBgColor.addEventListener('input', function() {
+        formPreview.style.backgroundImage = 'none';
+        bgImagePreview.style.display = 'none';
+        removeImageBtn.style.display = 'none';
+        formBgImage.value = '';
+        formPreview.style.backgroundColor = this.value;
+    });
+
+    // Create rating stars
+    function createRating(container) {
+        const ratingContainer = document.createElement('div');
+        ratingContainer.className = 'rating';
+
+        for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('span');
+            star.className = 'rating-star';
+            star.innerHTML = '★';
+            star.dataset.value = i;
+
+            star.addEventListener('click', function() {
+                // Set active class for clicked star and previous stars
+                ratingContainer.querySelectorAll('.rating-star').forEach((s, index) => {
+                    if (index < i) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+
+            ratingContainer.appendChild(star);
+        }
+
+        container.appendChild(ratingContainer);
+    }
+
+    // Create address fields
+    function createAddressFields(container) {
+        const group = document.createElement('div');
+        group.className = 'address-fields';
+
+        const street = document.createElement('input');
+        street.type = 'text';
+        street.placeholder = getTranslation('street');
+        street.className = 'form-field';
+        applyFieldStyles(street);
+
+        const house = document.createElement('input');
+        house.type = 'text';
+        house.placeholder = getTranslation('house');
+        house.className = 'form-field';
+        applyFieldStyles(house);
+
+        const apartment = document.createElement('input');
+        apartment.type = 'text';
+        apartment.placeholder = getTranslation('apartment');
+        apartment.className = 'form-field';
+        applyFieldStyles(apartment);
+
+        group.appendChild(street);
+        group.appendChild(house);
+        group.appendChild(apartment);
+
+        container.appendChild(group);
+    }
+
+    // Create country select
+    function createCountrySelect(container) {
+        const countries = {
+            ru: [
+                "Австралия (Australia)",
+                "Австрия (Austria)",
+                "Азербайджан (Azerbaijan)",
+                "Албания (Albania)",
+                "Алжир (Algeria)",
+                "Аргентина (Argentina)",
+                "Армения (Armenia)",
+                "Беларусь (Belarus)",
+                "Бельгия (Belgium)",
+                "Болгария (Bulgaria)",
+                "Бразилия (Brazil)",
+                "Великобритания (United Kingdom)",
+                "Венгрия (Hungary)",
+                "Германия (Germany)",
+                "Греция (Greece)",
+                "Грузия (Georgia)",
+                "Дания (Denmark)",
+                "Египет (Egypt)",
+                "Израиль (Israel)",
+                "Индия (India)",
+                "Индонезия (Indonesia)",
+                "Иран (Iran)",
+                "Ирландия (Ireland)",
+                "Исландия (Iceland)",
+                "Испания (Spain)",
+                "Италия (Italy)",
+                "Казахстан (Kazakhstan)",
+                "Канада (Canada)",
+                "Китай (China)",
+                "Корея Южная (South Korea)",
+                "Латвия (Latvia)",
+                "Литва (Lithuania)",
+                "Малайзия (Malaysia)",
+                "Мексика (Mexico)",
+                "Нидерланды (Netherlands)",
+                "Норвегия (Norway)",
+                "Польша (Poland)",
+                "Португалия (Portugal)",
+                "Россия (Russia)",
+                "Румыния (Romania)",
+                "Саудовская Аравия (Saudi Arabia)",
+                "Сербия (Serbia)",
+                "Сингапур (Singapore)",
+                "Словакия (Slovakia)",
+                "Словения (Slovenia)",
+                "США (United States)",
+                "Таиланд (Thailand)",
+                "Турция (Turkey)",
+                "Украина (Ukraine)",
+                "Финляндия (Finland)",
+                "Франция (France)",
+                "Хорватия (Croatia)",
+                "Черногория (Montenegro)",
+                "Чехия (Czech Republic)",
+                "Швейцария (Switzerland)",
+                "Швеция (Sweden)",
+                "Эстония (Estonia)",
+                "Япония (Japan)"
+            ],
+            en: [
+                "Australia",
+                "Austria",
+                "Azerbaijan",
+                "Albania",
+                "Algeria",
+                "Argentina",
+                "Armenia",
+                "Belarus",
+                "Belgium",
+                "Bulgaria",
+                "Brazil",
+                "Canada",
+                "China",
+                "Croatia",
+                "Czech Republic",
+                "Denmark",
+                "Egypt",
+                "Estonia",
+                "Finland",
+                "France",
+                "Georgia",
+                "Germany",
+                "Greece",
+                "Hungary",
+                "Iceland",
+                "India",
+                "Indonesia",
+                "Iran",
+                "Ireland",
+                "Israel",
+                "Italy",
+                "Japan",
+                "Kazakhstan",
+                "Latvia",
+                "Lithuania",
+                "Malaysia",
+                "Mexico",
+                "Montenegro",
+                "Netherlands",
+                "Norway",
+                "Poland",
+                "Portugal",
+                "Romania",
+                "Russia",
+                "Saudi Arabia",
+                "Serbia",
+                "Singapore",
+                "Slovakia",
+                "Slovenia",
+                "South Korea",
+                "Spain",
+                "Sweden",
+                "Switzerland",
+                "Thailand",
+                "Turkey",
+                "Ukraine",
+                "United Kingdom",
+                "United States"
+            ],
+            es: [
+                "Alemania (Germany)",
+                "Argentina",
+                "Australia",
+                "Austria",
+                "Bélgica (Belgium)",
+                "Brasil (Brazil)",
+                "Bulgaria",
+                "Canadá (Canada)",
+                "China",
+                "Croacia (Croatia)",
+                "Dinamarca (Denmark)",
+                "Egipto (Egypt)",
+                "España",
+                "Estados Unidos (United States)",
+                "Finlandia (Finland)",
+                "Francia (France)",
+                "Grecia (Greece)",
+                "Hungría (Hungary)",
+                "India",
+                "Indonesia",
+                "Irán (Iran)",
+                "Irlanda (Ireland)",
+                "Islandia (Iceland)",
+                "Israel",
+                "Italia (Italy)",
+                "Japón (Japan)",
+                "Kazajistán (Kazakhstan)",
+                "Letonia (Latvia)",
+                "Lituania (Lithuania)",
+                "Malasia (Malaysia)",
+                "México",
+                "Noruega (Norway)",
+                "Países Bajos (Netherlands)",
+                "Polonia (Poland)",
+                "Portugal",
+                "Reino Unido (United Kingdom)",
+                "República Checa (Czech Republic)",
+                "Rumanía (Romania)",
+                "Rusia (Russia)",
+                "Serbia",
+                "Singapur (Singapore)",
+                "Suecia (Sweden)",
+                "Suiza (Switzerland)",
+                "Tailandia (Thailand)",
+                "Turquía (Turkey)",
+                "Ucrania (Ukraine)"
+            ],
+            fr: [
+                "Allemagne (Germany)",
+                "Argentine (Argentina)",
+                "Australie (Australia)",
+                "Autriche (Austria)",
+                "Belgique (Belgium)",
+                "Brésil (Brazil)",
+                "Bulgarie (Bulgaria)",
+                "Canada",
+                "Chine (China)",
+                "Croatie (Croatia)",
+                "Danemark (Denmark)",
+                "Égypte (Egypt)",
+                "Espagne (Spain)",
+                "États-Unis (United States)",
+                "Finlande (Finland)",
+                "France",
+                "Grèce (Greece)",
+                "Hongrie (Hungary)",
+                "Inde (India)",
+                "Indonésie (Indonesia)",
+                "Iran",
+                "Irlande (Ireland)",
+                "Islande (Iceland)",
+                "Israël (Israel)",
+                "Italie (Italy)",
+                "Japon (Japan)",
+                "Kazakhstan",
+                "Lettonie (Latvia)",
+                "Lituanie (Lithuania)",
+                "Malaisie (Malaysia)",
+                "Mexique (Mexico)",
+                "Norvège (Norway)",
+                "Pays-Bas (Netherlands)",
+                "Polonie (Poland)",
+                "Portugal",
+                "République tchèque (Czech Republic)",
+                "Roumanie (Romania)",
+                "Royaume-Uni (United Kingdom)",
+                "Russie (Russia)",
+                "Serbie (Serbia)",
+                "Singapour (Singapore)",
+                "Suède (Sweden)",
+                "Suisse (Switzerland)",
+                "Thaïlande (Thailand)",
+                "Turquie (Turkey)",
+                "Ukraine (Ukraine)"
+            ],
+            de: [
+                "Australien (Australia)",
+                "Belgien (Belgium)",
+                "Brasilien (Brazil)",
+                "China",
+                "Dänemark (Denmark)",
+                "Deutschland",
+                "Finnland (Finland)",
+                "Frankreich (France)",
+                "Griechenland (Greece)",
+                "Indien (India)",
+                "Indonesien (Indonesia)",
+                "Iran",
+                "Irland (Ireland)",
+                "Island (Iceland)",
+                "Israel",
+                "Italien (Italy)",
+                "Japan",
+                "Kanada (Canada)",
+                "Kasachstan (Kazakhstan)",
+                "Lettland (Latvia)",
+                "Litauen (Lithuania)",
+                "Malaysia",
+                "Mexiko (Mexico)",
+                "Niederlande (Netherlands)",
+                "Norwegen (Norway)",
+                "Österreich (Austria)",
+                "Polen (Poland)",
+                "Portugal",
+                "Rumänien (Romania)",
+                "Russland (Russia)",
+                "Schweden (Sweden)",
+                "Schweiz (Switzerland)",
+                "Serbien (Serbia)",
+                "Singapur (Singapore)",
+                "Spanien (Spain)",
+                "Südafrika (South Africa)",
+                "Südkorea (South Korea)",
+                "Thailand",
+                "Tschechien (Czech Republic)",
+                "Türkei (Turkey)",
+                "Ukraine (Ukraine)",
+                "Ungarn (Hungary)",
+                "Vereinigte Staaten (United States)",
+                "Vereinigtes Königreich (United Kingdom)"
+            ],
+            it: [
+                "Albania",
+                "Argentina",
+                "Australia",
+                "Austria",
+                "Belgio (Belgium)",
+                "Bielorussia (Belarus)",
+                "Brasile (Brazil)",
+                "Bulgaria",
+                "Canada",
+                "Cina (China)",
+                "Croazia (Croatia)",
+                "Danimarca (Denmark)",
+                "Egitto (Egypt)",
+                "Estonia",
+                "Finlandia (Finland)",
+                "Francia (France)",
+                "Germania (Germany)",
+                "Giappone (Japan)",
+                "Grecia (Greece)",
+                "India",
+                "Indonesia",
+                "Irlanda (Ireland)",
+                "Islanda (Iceland)",
+                "Israele (Israel)",
+                "Italia",
+                "Kazakistan (Kazakhstan)",
+                "Lettonia (Latvia)",
+                "Lituania (Lithuania)",
+                "Malaysia",
+                "Messico (Mexico)",
+                "Norvegia (Norway)",
+                "Paesi Bassi (Netherlands)",
+                "Polonia (Poland)",
+                "Portogallo (Portugal)",
+                "Regno Unito (United Kingdom)",
+                "Repubblica Ceca (Czech Republic)",
+                "Romania",
+                "Russia (Russia)",
+                "Serbia",
+                "Singapore",
+                "Slovacchia (Slovakia)",
+                "Slovenia",
+                "Spagna (Spain)",
+                "Stati Uniti (United States)",
+                "Svezia (Sweden)",
+                "Svizzera (Switzerland)",
+                "Turchia (Turkey)",
+                "Ucraina (Ukraine)",
+                "Ungheria (Hungary)"
+            ],
+            pt: [
+                "Alemanha (Germany)",
+                "Argentina",
+                "Austrália (Australia)",
+                "Áustria (Austria)",
+                "Bélgica (Belgium)",
+                "Brasil",
+                "Bulgária (Bulgaria)",
+                "Canadá (Canada)",
+                "China",
+                "Croácia (Croatia)",
+                "Dinamarca (Denmark)",
+                "Egito (Egypt)",
+                "Espanha (Spain)",
+                "Estados Unidos (United States)",
+                "Finlândia (Finland)",
+                "França (France)",
+                "Grécia (Greece)",
+                "Hungria (Hungary)",
+                "Índia (India)",
+                "Indonésia (Indonesia)",
+                "Irã (Iran)",
+                "Irlanda (Ireland)",
+                "Islândia (Iceland)",
+                "Israel",
+                "Itália (Italy)",
+                "Japão (Japan)",
+                "Cazaquistão (Kazakhstan)",
+                "Letônia (Latvia)",
+                "Lituânia (Lithuania)",
+                "Malásia (Malaysia)",
+                "México (Mexico)",
+                "Noruega (Norway)",
+                "Países Baixos (Netherlands)",
+                "Polônia (Poland)",
+                "Portugal",
+                "Reino Unido (United Kingdom)",
+                "República Tcheca (Czech Republic)",
+                "Romênia (Romania)",
+                "Rússia (Russia)",
+                "Sérvia (Serbia)",
+                "Singapura (Singapore)",
+                "Suécia (Sweden)",
+                "Suíça (Switzerland)",
+                "Tailândia (Thailand)",
+                "Turquia (Turkey)",
+                "Ucrânia (Ukraine)"
+            ]
+        };
+
+        const selectContainer = document.createElement('div');
+        selectContainer.className = 'custom-select';
+
+        const trigger = document.createElement('div');
+        trigger.className = 'custom-select-trigger form-field';
+        trigger.textContent = getTranslation('selectCountry');
+        applyFieldStyles(trigger);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'custom-options';
+
+        // Sort countries alphabetically
+        const sortedCountries = countries[formLanguage.value].sort((a, b) => {
+            // Remove English part for sorting
+            const aName = a.split(' (')[0].toLowerCase();
+            const bName = b.split(' (')[0].toLowerCase();
+            return aName.localeCompare(bName);
+        });
+
+        sortedCountries.forEach(country => {
+            const option = document.createElement('div');
+            option.className = 'custom-option';
+            option.textContent = country;
+            option.dataset.value = country;
+
+            option.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = dropdownHoverColor.value;
+            });
+
+            option.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.backgroundColor = fieldBgColor.value;
+                }
+            });
+
+            option.addEventListener('click', function() {
+                optionsContainer.querySelectorAll('.custom-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.style.backgroundColor = fieldBgColor.value;
+                });
+
+                this.classList.add('selected');
+                this.style.backgroundColor = dropdownSelectedColor.value;
+                trigger.textContent = this.textContent;
+                optionsContainer.style.display = 'none';
+            });
+
+            optionsContainer.appendChild(option);
+        });
+
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', function() {
+            optionsContainer.style.display = 'none';
+        });
+
+        selectContainer.appendChild(trigger);
+        selectContainer.appendChild(optionsContainer);
+        container.appendChild(selectContainer);
+    }
+
+    // Create gender radio buttons
+    function createGenderRadio(container) {
+        const radioContainer = document.createElement('div');
+        radioContainer.className = 'radio-group';
+
+        const genders = [
+            { id: 'male', label: getTranslation('male') },
+            { id: 'female', label: getTranslation('female') },
+            { id: 'other', label: getTranslation('other') }
+        ];
+
+        genders.forEach(gender => {
+            const radioItem = document.createElement('div');
+            radioItem.className = 'radio-item';
+
+            const radioInput = document.createElement('input');
+            radioInput.type = 'radio';
+            radioInput.id = `gender_${gender.id}`;
+            radioInput.name = 'gender';
+            radioInput.value = gender.id;
+
+            const radioLabel = document.createElement('label');
+            radioLabel.htmlFor = `gender_${gender.id}`;
+            radioLabel.textContent = gender.label;
+
+            radioItem.appendChild(radioInput);
+            radioItem.appendChild(radioLabel);
+
+            // Add text input for "other" option
+            if (gender.id === 'other') {
+                const otherInput = document.createElement('input');
+                otherInput.type = 'text';
+                otherInput.placeholder = getTranslation('specifyGender');
+                otherInput.className = 'form-field';
+                otherInput.style.marginLeft = '10px';
+                otherInput.style.width = 'auto';
+                otherInput.style.flexGrow = '1';
+                applyFieldStyles(otherInput);
+
+                radioItem.appendChild(otherInput);
+            }
+
+            radioContainer.appendChild(radioItem);
+        });
+
+        container.appendChild(radioContainer);
+    }
+
+    // Create delivery method radio buttons
+    function createDeliveryMethod(container) {
+        const methods = [
+            { id: 'courier', label: getTranslation('courier') },
+            { id: 'post', label: getTranslation('post') },
+            { id: 'pickup', label: getTranslation('pickup') }
+        ];
+
+        const radioContainer = document.createElement('div');
+        radioContainer.className = 'radio-group';
+
+        methods.forEach(method => {
+            const radioItem = document.createElement('div');
+            radioItem.className = 'radio-item';
+
+            const radioInput = document.createElement('input');
+            radioInput.type = 'radio';
+            radioInput.id = `delivery_${method.id}`;
+            radioInput.name = 'delivery';
+            radioInput.value = method.id;
+
+            const radioLabel = document.createElement('label');
+            radioLabel.htmlFor = `delivery_${method.id}`;
+            radioLabel.textContent = method.label;
+
+            radioItem.appendChild(radioInput);
+            radioItem.appendChild(radioLabel);
+
+            radioContainer.appendChild(radioItem);
+        });
+
+        container.appendChild(radioContainer);
+    }
+
+    // Format discount card number
+    function formatDiscountCard(input) {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) value = value.substring(0, 4) + '-' + value.substring(4, 8);
+            e.target.value = value.substring(0, 9);
+        });
+    }
+
+    // Main function to update the form preview
+    function updateFormPreview() {
+        // Apply form styles
+        formPreview.style.padding = `${formPadding.value}px`;
+        previewForm.style.gap = `${fieldGap.value}px`;
+        formPreview.style.width = `${formWidth.value}px`;
+        previewFormTitle.textContent = formTitle.value;
+
+        // Clear previous fields
+        previewForm.innerHTML = '';
+
+        // Add selected fields (все поля идут последовательно без группировки)
+        if (nameField.checked) {
+            const field = document.createElement('input');
+            field.type = 'text';
+            field.placeholder = getTranslation('name');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (surnameField.checked) {
+            const field = document.createElement('input');
+            field.type = 'text';
+            field.placeholder = getTranslation('surname');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (ageField.checked) {
+            const field = document.createElement('input');
+            field.type = 'number';
+            field.placeholder = getTranslation('age');
+            field.min = '18';
+            field.max = '100';
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (birthdateField.checked) {
+            const field = document.createElement('input');
+            field.type = 'date';
+            field.className = 'form-field';
+            field.style.backgroundColor = '#F5F5F5';
+            field.style.borderColor = '#CCCCCC';
+            field.style.color = '#333';
+            previewForm.appendChild(field);
+        }
+
+        if (genderField.checked) {
+            const genderContainer = document.createElement('div');
+            genderContainer.className = 'radio-group';
+            genderContainer.style.backgroundColor = 'transparent';
+
+            const genders = [
+                { id: 'male', label: getTranslation('male') },
+                { id: 'female', label: getTranslation('female') },
+                { id: 'other', label: getTranslation('other') }
+            ];
+
+            genders.forEach(gender => {
+                const radioItem = document.createElement('div');
+                radioItem.className = 'radio-item';
+                radioItem.style.backgroundColor = 'transparent';
+
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.id = `gender_${gender.id}`;
+                radioInput.name = 'gender';
+                radioInput.value = gender.id;
+
+                const radioLabel = document.createElement('label');
+                radioLabel.htmlFor = `gender_${gender.id}`;
+                radioLabel.textContent = gender.label;
+                radioLabel.style.color = '#333';
+
+                radioItem.appendChild(radioInput);
+                radioItem.appendChild(radioLabel);
+
+                if (gender.id === 'other') {
+                    const otherInput = document.createElement('input');
+                    otherInput.type = 'text';
+                    otherInput.placeholder = getTranslation('specifyGender');
+                    otherInput.className = 'form-field';
+                    otherInput.style.marginLeft = '10px';
+                    otherInput.style.width = 'auto';
+                    otherInput.style.flexGrow = '1';
+                    otherInput.style.backgroundColor = '#F5F5F5';
+                    otherInput.style.borderColor = '#CCCCCC';
+                    otherInput.style.color = '#333';
+
+                    radioItem.appendChild(otherInput);
+                }
+
+                genderContainer.appendChild(radioItem);
+            });
+
+            previewForm.appendChild(genderContainer);
+        }
+
+        if (countryField.checked) {
+            createCountrySelect(previewForm);
+        }
+
+        if (emailField.checked) {
+            const field = document.createElement('input');
+            field.type = 'email';
+            field.placeholder = getTranslation('email');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (phoneField.checked) {
+            const field = document.createElement('input');
+            field.type = 'tel';
+            field.placeholder = getTranslation('phone');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (passwordField.checked) {
+            const passField = document.createElement('input');
+            passField.type = 'password';
+            passField.placeholder = getTranslation('password');
+            passField.className = 'form-field';
+            applyFieldStyles(passField);
+            previewForm.appendChild(passField);
+
+            const confirmField = document.createElement('input');
+            confirmField.type = 'password';
+            confirmField.placeholder = getTranslation('confirmPassword');
+            confirmField.className = 'form-field';
+            applyFieldStyles(confirmField);
+            previewForm.appendChild(confirmField);
+        }
+
+        if (deliveryField.checked) {
+            const deliveryContainer = document.createElement('div');
+            deliveryContainer.className = 'radio-group';
+            deliveryContainer.style.backgroundColor = 'transparent';
+
+            const methods = [
+                { id: 'courier', label: getTranslation('courier') },
+                { id: 'post', label: getTranslation('post') },
+                { id: 'pickup', label: getTranslation('pickup') }
+            ];
+
+            methods.forEach(method => {
+                const radioItem = document.createElement('div');
+                radioItem.className = 'radio-item';
+                radioItem.style.backgroundColor = 'transparent';
+
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.id = `delivery_${method.id}`;
+                radioInput.name = 'delivery';
+                radioInput.value = method.id;
+
+                const radioLabel = document.createElement('label');
+                radioLabel.htmlFor = `delivery_${method.id}`;
+                radioLabel.textContent = method.label;
+                radioLabel.style.color = '#333';
+
+                radioItem.appendChild(radioInput);
+                radioItem.appendChild(radioLabel);
+
+                deliveryContainer.appendChild(radioItem);
+            });
+
+            previewForm.appendChild(deliveryContainer);
+        }
+
+        if (addressField.checked) {
+            createAddressFields(previewForm);
+        }
+
+        if (aboutField.checked) {
+            const field = document.createElement('textarea');
+            field.placeholder = getTranslation('about');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (commentField.checked) {
+            const field = document.createElement('textarea');
+            field.placeholder = getTranslation('comment');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            previewForm.appendChild(field);
+        }
+
+        if (discountField.checked) {
+            const field = document.createElement('input');
+            field.type = 'text';
+            field.placeholder = getTranslation('discount');
+            field.className = 'form-field';
+            applyFieldStyles(field);
+            formatDiscountCard(field);
+            previewForm.appendChild(field);
+        }
+
+        if (ratingField.checked) {
+            const label = document.createElement('div');
+            label.textContent = getTranslation('rating') + ':';
+            label.style.marginBottom = '5px';
+            label.style.color = '#333';
+            previewForm.appendChild(label);
+            createRating(previewForm);
+        }
+
+        if (dropdownField.checked) {
+            const selectContainer = document.createElement('div');
+            selectContainer.className = 'custom-select';
+
+            const trigger = document.createElement('div');
+            trigger.className = 'custom-select-trigger form-field';
+            trigger.textContent = getTranslation('selectOption');
+            applyFieldStyles(trigger);
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'custom-options';
+
+            const options = dropdownOptionsContainer.querySelectorAll('.dropdown-option-text');
+            options.forEach((opt, index) => {
+                const option = document.createElement('div');
+                option.className = 'custom-option';
+                option.textContent = opt.value;
+                option.dataset.value = opt.value;
+
+                option.style.backgroundColor = '#F5F5F5';
+                option.style.borderRadius = `${borderRadius.value}px`;
+                option.style.margin = '2px';
+                option.style.color = '#333';
+
+                option.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#E0E0E0';
+                });
+
+                option.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.backgroundColor = '#F5F5F5';
+                    }
+                });
+
+                option.addEventListener('click', function() {
+                    optionsContainer.querySelectorAll('.custom-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                        opt.style.backgroundColor = '#F5F5F5';
+                    });
+
+                    this.classList.add('selected');
+                    this.style.backgroundColor = '#CCCCCC';
+                    trigger.textContent = this.textContent;
+                    optionsContainer.style.display = 'none';
+                });
+
+                optionsContainer.appendChild(option);
+            });
+
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                optionsContainer.style.display = 'none';
+            });
+
+            selectContainer.appendChild(trigger);
+            selectContainer.appendChild(optionsContainer);
+            previewForm.appendChild(selectContainer);
+        }
+    }
+
+    function applyFieldStyles(element) {
+        element.style.backgroundColor = '#F5F5F5';
+        element.style.borderColor = '#CCCCCC';
+        element.style.borderWidth = '1px';
+        element.style.borderRadius = '4px';
+        element.style.borderStyle = 'solid';
+        element.style.width = '100%';
+        element.style.color = '#333';
+    }
+
+    // Update dropdown colors when changed
+    dropdownHoverColor.addEventListener('input', function() {
+        document.querySelectorAll('.custom-option').forEach(option => {
+            option.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = dropdownHoverColor.value;
+            });
+        });
+    });
+
+    dropdownSelectedColor.addEventListener('input', function() {
+        document.querySelectorAll('.custom-option.selected').forEach(option => {
+            option.style.backgroundColor = dropdownSelectedColor.value;
+        });
+    });
+
+    // Add event listeners to all checkboxes to update form preview
+    const allCheckboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
+    allCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateFormPreview);
+    });
+
+    // Add event listeners to all style controls to update form preview
+    const styleControls = [
+        formPadding, fieldGap, fieldBgColor, fieldBorderColor,
+        borderWidth, borderRadius, dropdownHoverColor, dropdownSelectedColor
+    ];
+
+    styleControls.forEach(control => {
+        control.addEventListener('input', updateFormPreview);
+    });
+
+    // Initialize the form preview
+    updateFormPreview();
+</script>
+</body>
+</html>
