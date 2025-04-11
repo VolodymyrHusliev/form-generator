@@ -15,6 +15,16 @@
             --field-border: #555555;
             --color-picker-bg: #444444;
             --footer-text: #aaaaaa;
+            --main-font: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+            /* Ваши параметры */
+            --input-width: 150px;
+            --input-height: 40px;
+            --border-radius: 10px;
+            --border-width: 1px;
+
+            --input-padding: 8px 12px;
+            --transition-time: 0.2s;
         }
 
         .light-mode {
@@ -28,8 +38,90 @@
             --footer-text: #666;
         }
 
+        /* Стили для элементов УПРАВЛЕНИЯ (редактора) */
+        input[type="number"],
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        .custom-select-trigger {
+            width: var(--input-width) !important;
+            height: var(--input-height) !important;
+            padding: var(--input-padding);
+            border: var(--border-width) solid var(--field-border);
+            border-radius: var(--border-radius);
+            background-color: var(--field-bg);
+            color: var(--text-color);
+            transition: all var(--transition-time);
+            font-family: var(--main-font);
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input[type="color"] {
+            width: var(--input-width) !important;
+            height: var(--input-height) !important;
+            border: var(--border-width) solid var(--field-border);
+            border-radius: 10px;
+            padding: 1px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            background: var(--color-picker-bg);
+            box-sizing: border-box;
+        }
+
+        button,
+        .remove-image-btn {
+            width: var(--input-width) !important;
+            height: var(--input-height) !important;
+            border-radius: var(--border-radius);
+            border: var(--border-width) solid var(--field-border);
+            padding: var(--input-padding);
+            font-family: var(--main-font);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-time);
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: auto !important;
+            min-height: 100px;
+            resize: vertical;
+            height: auto;
+        }
+
+        /* Стили для СГЕНЕРИРОВАННОЙ ФОРМЫ (превью) - НЕ ТРОГАЕМ */
+        #formPreview input,
+        #formPreview select,
+        #formPreview textarea,
+        #formPreview button,
+        #formPreview .form-field {
+            width: 100% !important;
+            height: auto !important;
+            padding: 10px !important;
+            border-radius: 4px !important;
+            border: 1px solid #ccc !important;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        #formPreview textarea {
+            min-height: 100px;
+        }
+
+        #formPreview button {
+            width: auto !important;
+            padding: 10px 20px !important;
+            height: auto !important;
+        }
+
+        /* Остальные стили (без изменений) */
         body {
-            font-family: Arial, sans-serif;
+            font-family: var(--main-font);
             margin: 30px 0 100px;
             padding: 0;
             display: flex;
@@ -37,7 +129,9 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             min-height: calc(100vh - 240px);
-            transition: background-color 0.3s, color 0.3s;
+            transition: all 0.3s;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .header {
@@ -76,6 +170,7 @@
             right: 0;
             margin: 0 auto;
             pointer-events: none;
+            font-family: var(--main-font);
         }
 
         .theme-toggle {
@@ -93,6 +188,7 @@
             display: flex;
             align-items: center;
             height: 30px;
+            font-family: var(--main-font);
         }
 
         .toggle-switch {
@@ -116,7 +212,7 @@
             right: 0;
             bottom: 0;
             background-color: #ccc;
-            transition: .4s;
+            transition: var(--transition-time);
             border-radius: 34px;
         }
 
@@ -128,7 +224,7 @@
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: .4s;
+            transition: var(--transition-time);
             border-radius: 50%;
         }
 
@@ -153,7 +249,7 @@
         .section {
             background-color: var(--section-bg);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             box-shadow: 0 2px 4px var(--section-shadow);
             width: 100%;
             transition: all 0.3s;
@@ -165,6 +261,7 @@
             font-size: 18px;
             color: var(--text-color);
             transition: color 0.3s;
+            font-family: var(--main-font);
         }
 
         .control-group {
@@ -180,25 +277,13 @@
             align-items: center;
             color: var(--text-color);
             transition: color 0.3s;
+            font-family: var(--main-font);
         }
 
         .control-inputs {
             display: flex;
             align-items: center;
-            gap: 10px;
             flex-grow: 1;
-        }
-
-        input[type="color"] {
-            width: 40px;
-            height: 30px;
-            border: 2px solid var(--field-border);
-            border-radius: 8px;
-            padding: 0;
-            cursor: pointer;
-            -webkit-appearance: none;
-            background: var(--color-picker-bg);
-            box-sizing: border-box;
         }
 
         input[type="color"]::-webkit-color-swatch-wrapper {
@@ -207,23 +292,12 @@
 
         input[type="color"]::-webkit-color-swatch {
             border: none;
-            border-radius: 4px;
+            border-radius: calc(var(--border-radius) - 2px);
         }
 
-        input[type="number"],
-        input[type="text"],
-        input[type="password"],
-        input[type="date"],
-        input[type="email"],
-        input[type="tel"],
-        select {
-            padding: 8px;
-            border: 1px solid var(--field-border);
-            border-radius: 4px;
-            width: 80px;
-            background-color: var(--field-bg);
-            color: var(--text-color);
-            transition: all 0.3s;
+        input[type="color"]::-moz-color-swatch {
+            border-radius: calc(var(--border-radius) - 2px);
+            border: none;
         }
 
         .checkbox-group {
@@ -243,6 +317,7 @@
         .checkbox-item label {
             color: var(--text-color);
             transition: color 0.3s;
+            font-family: var(--main-font);
         }
 
         .dropdown-options {
@@ -265,16 +340,15 @@
             flex-grow: 1;
         }
 
-        /* Стили для превью формы */
         .preview-container {
-            background-color: #0000FF;
+            background-color: var(--preview-bg);
             padding: 300px 0;
             width: 100%;
             margin: 20px 0;
             display: flex;
             justify-content: center;
             box-sizing: border-box;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
         }
 
         #formPreview {
@@ -283,6 +357,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             width: 100%;
+            max-width: 600px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -290,28 +365,14 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            font-family: var(--main-font);
         }
 
         .preview-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             width: 100%;
-        }
-
-        .form-field {
-            padding: 10px;
-            border: 1px solid #CCCCCC;
-            border-radius: 4px;
-            background-color: #F5F5F5;
-            width: 100%;
-            box-sizing: border-box;
-            color: #333;
-        }
-
-        textarea.form-field {
-            min-height: 80px;
-            resize: vertical;
         }
 
         .form-title {
@@ -320,6 +381,7 @@
             color: #333;
             text-align: center;
             width: 100%;
+            font-family: var(--main-font);
         }
 
         .image-preview {
@@ -327,6 +389,7 @@
             max-height: 150px;
             margin-top: 10px;
             display: none;
+            border-radius: 4px;
         }
 
         .remove-image-btn {
@@ -334,10 +397,12 @@
             color: white;
             border: none;
             border-radius: 4px;
-            padding: 4px 8px;
+            padding: 8px 16px;
             margin-left: 10px;
             cursor: pointer;
             display: none;
+            height: auto;
+            font-family: var(--main-font);
         }
 
         .remove-image-btn:hover {
@@ -347,17 +412,6 @@
         .custom-select {
             position: relative;
             width: 100%;
-        }
-
-        .custom-select-trigger {
-            padding: 10px;
-            border: 1px solid #CCCCCC;
-            border-radius: 4px;
-            background-color: #F5F5F5;
-            cursor: pointer;
-            width: 100%;
-            box-sizing: border-box;
-            color: #333;
         }
 
         .custom-options {
@@ -376,11 +430,14 @@
         }
 
         .custom-option {
-            padding: 10px;
+            padding: 8px 12px;
             cursor: pointer;
             background-color: #F5F5F5;
             color: #333;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            border-radius: 2px;
+            margin: 2px;
+            font-family: var(--main-font);
         }
 
         .custom-option:hover {
@@ -402,6 +459,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-family: var(--main-font);
         }
 
         .rating {
@@ -414,6 +472,7 @@
             font-size: 24px;
             color: #ddd;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .rating-star.active {
@@ -439,12 +498,14 @@
             box-shadow: 0 -2px 5px var(--section-shadow);
             z-index: 100;
             transition: all 0.3s;
+            font-family: var(--main-font);
         }
 
         .footer a {
             color: #2196F3;
             text-decoration: none;
             font-weight: bold;
+            font-family: var(--main-font);
         }
 
         .footer a:hover {
@@ -454,6 +515,25 @@
         .heart {
             color: #ff4444;
             font-size: 16px;
+        }
+
+        /* Ховер и фокус эффекты */
+        input:not([type="color"]):hover,
+        select:hover,
+        textarea:hover,
+        button:hover,
+        .custom-select-trigger:hover {
+            border-color: #999 !important;
+        }
+
+        input:not([type="color"]):focus,
+        select:focus,
+        textarea:focus,
+        button:focus,
+        .custom-select-trigger:focus {
+            outline: none;
+            border-color: #4285f4 !important;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
         }
     </style>
 </head>
@@ -475,6 +555,12 @@
     <div class="section">
         <div class="section-title">[ Настройки формы ]</div>
         <div class="control-group">
+            <label for="formTitle">Заголовок формы:</label>
+            <div class="control-inputs">
+                <input type="text" id="formTitle" value="Моя форма" style="flex-grow: 1;">
+            </div>
+        </div>
+        <div class="control-group">
             <label for="formLanguage">Язык формы:</label>
             <div class="control-inputs">
                 <select id="formLanguage">
@@ -488,16 +574,11 @@
                 </select>
             </div>
         </div>
-        <div class="control-group">
-            <label for="formTitle">Заголовок формы:</label>
-            <div class="control-inputs">
-                <input type="text" id="formTitle" value="Моя форма" style="flex-grow: 1;">
-            </div>
-        </div>
+        
         <div class="control-group">
             <label for="formWidth">Ширина формы:</label>
             <div class="control-inputs">
-                <input type="number" id="formWidth" value="600" min="300" max="1200"> px
+                <input type="number" id="formWidth" value="600" min="300" max="1200">
             </div>
         </div>
         <div class="control-group">
@@ -511,21 +592,21 @@
             <img id="bgImagePreview" class="image-preview">
         </div>
         <div class="control-group">
-            <label for="formPadding">Отступы:</label>
+            <label for="formPadding">Отступы по сторонам:</label>
             <div class="control-inputs">
-                <input type="number" id="formPadding" value="20" min="0"> px
+                <input type="number" id="formPadding" value="20" min="0">
             </div>
         </div>
         <div class="control-group">
             <label for="fieldGap">Отступы между полями:</label>
             <div class="control-inputs">
-                <input type="number" id="fieldGap" value="10" min="0"> px
+                <input type="number" id="fieldGap" value="10" min="0">
             </div>
         </div>
         <div class="control-group">
             <label for="formBorderRadius">Скругление формы:</label>
             <div class="control-inputs">
-                <input type="number" id="formBorderRadius" value="8" min="0"> px
+                <input type="number" id="formBorderRadius" value="8" min="0">
             </div>
         </div>
     </div>
@@ -547,13 +628,13 @@
         <div class="control-group">
             <label for="borderWidth">Толщина:</label>
             <div class="control-inputs">
-                <input type="number" id="borderWidth" value="1" min="0"> px
+                <input type="number" id="borderWidth" value="1" min="0">
             </div>
         </div>
         <div class="control-group">
             <label for="borderRadius">Скругление:</label>
             <div class="control-inputs">
-                <input type="number" id="borderRadius" value="4" min="0"> px
+                <input type="number" id="borderRadius" value="4" min="0">
             </div>
         </div>
         <div class="control-group">
@@ -1222,7 +1303,7 @@
                 option.className = 'custom-option';
                 option.textContent = opt.value;
                 option.dataset.value = opt.value;
-                applyFieldStyles(option);
+                
 
                 option.addEventListener('mouseenter', function() {
                     this.style.backgroundColor = dropdownHoverColor.value;
@@ -1265,15 +1346,18 @@
     }
 
     function applyFieldStyles(element) {
-        element.style.backgroundColor = fieldBgColor.value;
-        element.style.borderColor = fieldBorderColor.value;
-        element.style.borderWidth = borderWidth.value + 'px';
-        element.style.borderRadius = borderRadius.value + 'px';
-        element.style.borderStyle = 'solid';
-        element.style.padding = '10px';
+        element.style.fontFamily = 'inherit';
+        element.style.fontSize = '14px';
+        element.style.height = '40px';
+        element.style.borderRadius = '10px';
+        element.style.border = '1px solid #ddd';
+        element.style.padding = '8px 12px';
         element.style.boxSizing = 'border-box';
         element.style.width = '100%';
         element.style.color = '#333';
+        element.style.backgroundColor = fieldBgColor.value;
+        element.style.borderColor = fieldBorderColor.value;
+        element.style.transition = 'all 0.2s';
     }
 
     // Update dropdown colors when changed
